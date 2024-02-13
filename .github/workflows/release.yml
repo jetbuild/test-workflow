@@ -42,4 +42,7 @@ jobs:
       - name: Set up ko
         uses: ko-build/setup-ko@v0.6
       - name: Dockerize
-        run: ko build github.com/${{ github.repository }}/cmd --platform=all --bare
+        run: | 
+          ko login ${{ secrets.DOCKER_REGISTRY_HOST }} -u ${{ secrets.DOCKER_REGISTRY_USERNAME }} -p ${{ secrets.DOCKER_REGISTRY_TOKEN }}
+          echo "KO_DOCKER_REPO=${{ secrets.DOCKER_REGISTRY_HOST }}/${{ github.repository }}" >> $GITHUB_ENV
+          ko build github.com/${{ github.repository }}/cmd --platform=all --bare

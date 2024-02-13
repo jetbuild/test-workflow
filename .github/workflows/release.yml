@@ -1,0 +1,45 @@
+name: Release
+on:
+  release:
+    types:
+      - published
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check release target commitish
+        run: |
+          if [[ "${{ github.event.release.target_commitish }}" != "main" ]]; then
+            echo "::error::Release target commitish is not main." && exit 1
+          fi
+      - name: Check release tag name
+        run: |
+          if ! [[ "${{ github.event.release.tag_name }}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Release tag name is not semantic." && exit 1
+          fi
+      - name: Check release name
+        run: |
+          if [[ "${{ github.event.release.name }}" != "${{ github.event.release.tag_name }}" ]]; then
+            echo "::error::Release name is not equal to release tag name." && exit 1
+          fi
+      - name: Check release type
+        run: |
+          if [[ "${{ github.event.release.prerelease }}" != false ]]; then
+            echo "::error::Release type is prerelease." && exit 1
+          fi
+      - name: Check release status
+        run: |
+          if [[ "${{ github.event.release.draft }}" != false ]]; then
+            echo "::error::Release status is draft." && exit 1
+          fi
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Set up ko
+        uses: ko-build/setup-ko@v0.6
+      - name: Dockerize
+        run: ko build ./cmd --platform=all

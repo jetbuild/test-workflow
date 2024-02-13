@@ -42,4 +42,4 @@ jobs:
       - name: Set up ko
         uses: ko-build/setup-ko@v0.6
       - name: Dockerize
-        run: ko build github.com${{ github.repository }}/cmd --platform=all --bare
+        run: ko build github.com/${{ github.repository }}/cmd --platform=all --bare

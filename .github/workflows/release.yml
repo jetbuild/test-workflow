@@ -47,4 +47,4 @@ jobs:
       - name: Dockerize
         run: | 
           ko login ${{ secrets.DOCKER_REGISTRY_HOST }} -u ${{ secrets.DOCKER_REGISTRY_USERNAME }} -p ${{ secrets.DOCKER_REGISTRY_TOKEN }}
-          ko build github.com/${{ github.repository }}/cmd --platform=all --bare
+          ko build github.com/${{ github.repository }}/cmd --platform=all -t ${{ github.event.release.tag_name }}

@@ -47,6 +47,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ github.event.repository.full_name }}
+          tags: type=semver,pattern={{major}}.{{minor}}
       - name: Dockerize
         uses: docker/build-push-action@v5
         with:

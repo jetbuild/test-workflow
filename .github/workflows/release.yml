@@ -7,3 +7,6 @@ jobs:
   release:
     name: Release
     uses: jetbuild/.github/.github/workflows/release.yml@main
+    secrets:
+      DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+      DOCKER_REGISTRY_TOKEN: ${{ secrets.DOCKER_REGISTRY_TOKEN }}

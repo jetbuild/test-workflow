@@ -5,4 +5,4 @@ on:
       - published
 jobs:
   release:
-    uses: jetbuild/.github/workflows/release.yml
+    uses: jetbuild/.github/workflows/release.yml@main
